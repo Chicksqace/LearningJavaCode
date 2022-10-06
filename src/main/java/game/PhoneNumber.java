@@ -11,6 +11,7 @@ public class PhoneNumber {
         }
         System.out.println("练习方式"+tel);
 
-        System.out.println("你好");
+        System.out.println("你好测试1");
+        System.out.println("你好测试2");
     }
 }
