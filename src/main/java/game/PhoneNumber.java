@@ -10,7 +10,6 @@ public class PhoneNumber {
             tel+=arr[i];
         }
         System.out.println("练习方式"+tel);
-
         System.out.println("你好");
     }
 }
