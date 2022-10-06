@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计时</title>
+    <style>
+	 .parent{
+		 display: flex;
+		 flex-direction: column;
+		 align-items: center;
+		 padding-top: 50px;
+	 }
+	 .parent input{
+		 padding: 10px 10px;
+		 width: 230px;
+		 outline: none;
+	 }
+	 .parent button{
+		 height: 35px;
+		 padding: 0 10px;
+	 }
+	 .parent span{
+		 color: #f00;
+	 }
+ </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="parent">
+    <h2 style="color: aqua;">陈攀宇的下班时间</h2>
+    <div>
+        <input type="number" min="14" max="21"  class="userInput" placeholder="请输入你的下班时间">
+        <button class="btn">确定</button>
+    </div>
+    <div class="show">
+        <span>距离下班：</span>
+        <span id="timeid2" style="font-size:35px">88</span>小时
+        <span id="timeid3" style="font-size:35px">88</span>分
+        <span id="timeid4" style="font-size:35px">88</span>秒
+    </div>
+</div>
+<script type="text/javascript">
+	 var hour='',minute='',timer='';
+	 $('.btn').click(function(){
+		 var userInput=$('.userInput').val();
+		 if(!userInput){
+			 alert('不能为空哦');
+			 return false;
+		 }
+		 if(userInput.length<=2){
+			if(userInput<=0||userInput>=24){
+				 alert('我不知道该说些什么!,你给的时间很奇怪!');
+			}else{
+				hour=userInput;
+				 if(userInput<14){
+					 alert('乖乖你下班时间也太早了吧!不用计时了我嫉妒了!');
+					 timer=setInterval("loveTime();",1000);
+					 return false;
+				 }
+				 if(userInput>21){
+					 alert('老哥你下班时间太晚了!早点回家吃饭,洗澡睡觉吧!注意身体!');
+					 timer=setInterval("loveTime();",1000);
+					 return false;
+				 }
+				 if(userInput>=14||userInput<=21){
+					 // 使用定时器实现每一秒写一次时间
+					 timer=setInterval("loveTime();",1000);
+				 }
+
+			}
+		 }else if(userInput.length<=4){
+			 minute=userInput.slice(2);
+			 hour=userInput.slice(0,2);
+			 if(userInput<=0||userInput>=2400){
+			 	 alert('我不知道该说些什么!,你给的时间很奇怪!');
+				 $('.userInput').val('');
+				 return false;
+			 }else{
+			 	 if(userInput<1400){
+			 		 alert('乖乖你下班时间也太早了吧!不用计时了我嫉妒了!');
+					 timer=setInterval("loveTime();",1000);
+					 $('.userInput').val('');
+			 		 return false;
+			 	 }
+			 	 if(userInput>2100){
+			 		 alert('老哥你下班时间太晚了!早点回家吃饭,洗澡睡觉吧!注意身体!');
+					 timer=setInterval("loveTime();",1000);
+					 $('.userInput').val('');
+			 		 return false;
+			 	 }
+				 if(userInput=>1400||userInput<=2100){
+					 // 使用定时器实现每一秒写一次时间
+					 timer=setInterval("loveTime();",1000);
+				 }
+
+			 }
+		 }else{
+			 alert('我不知道该说些什么!,你给的时间很奇怪!');
+			 $('.userInput').val('');
+		 }
+
+	 })
+  function loveTime() {
+	  var hs = document.getElementById("timeid2");
+	  var ms = document.getElementById("timeid3");
+	  var ss = document.getElementById("timeid4");
+	  var time=new Date();
+	  var year=time.getFullYear();
+	  var month=time.getMonth()+1;
+	  month=month<10?'0'+month:month;
+	  var date=time.getDate();
+	  date=date<10?'0'+date:date;
+	  var str;
+	  if(minute){
+		  str=`${year}/${month}/${date} ${hour}:${minute}`
+	  }else{
+		  str=`${year}/${month}/${date} ${hour}:00`
+	  }
+	  console.log(str);
+	  var xiaban=new Date(str).getTime();
+	  var now=new Date().getTime();
+	  var date=xiaban-now;
+	  console.log(date,timer);
+	  if(date<0){
+		  alert('你他哥已经下班了,还来算什么时间!');
+		  clearInterval(3);
+		  clearInterval(4);
+		  clearInterval(5);
+		  clearInterval(6);
+		  clearInterval(7);
+		  clearInterval(8);
+		  hs.innerHTML = 88;
+		  ms.innerHTML = 88;
+		  ss.innerHTML = 88;
+		  return;
+	  }
+	  var days = Math.floor(date / 1000 / 60 / 60 / 24) // 从这里开始
+	  var daysmod = date - days * 24 *60 * 60 * 1000
+	  var hours = Math.floor(daysmod / 1000 / 60 / 60)
+	  hours=hours<10?'0'+hours:hours;
+	  var hoursmod = date - (days * 24 *60 * 60 * 1000) - (hours * 1000 * 60 * 60)
+	  var minutes = Math.floor(hoursmod / 1000 / 60);
+	  minutes=minutes<10?'0'+minutes:minutes;
+	  var minutesmod = date - (days * 24 *60 * 60 * 1000) - (hours * 1000 * 60 * 60) - (minutes * 1000 * 60);
+	  minutesmod=minutesmod<10?'0'+minutesmod:minutesmod;
+	  var seconds = Math.floor(minutesmod / 1000) // 到这里结束，是将总毫秒转化成对应天数+小时数+分钟数+秒数的转换方法
+	  seconds=seconds<10?'0'+seconds:seconds;
+	  hs.innerHTML = hours;
+	  ms.innerHTML = minutes;
+	  ss.innerHTML = seconds;
+  }
+
+ </script>
+</body>
+</html>
